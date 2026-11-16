@@ -44,7 +44,7 @@ export function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <a href={tel(lawyers[0].phone)} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+          <a href={tel(lawyers[0]!.phone)} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
             <Phone className="h-4 w-4" /> Call us
           </a>
         </nav>
