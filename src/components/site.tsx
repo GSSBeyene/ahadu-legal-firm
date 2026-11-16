@@ -57,6 +57,9 @@ export function SiteHeader() {
           {nav.map((n) => (
             <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="font-medium">{n.label}</Link>
           ))}
+          <a href={tel(lawyers[0]!.phone)} className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
+            <Phone className="h-4 w-4" /> Call us
+          </a>
         </nav>
       )}
     </header>
@@ -97,10 +100,10 @@ export function SiteFooter() {
 export function PageHero({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
   return (
     <section className="border-b border-border bg-secondary">
-      <div className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-crimson">{eyebrow}</p>
-        <h1 className="mt-4 max-w-3xl text-5xl font-semibold leading-tight md:text-6xl">{title}</h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{text}</p>
+        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl">{title}</h1>
+        <p className="mt-4 max-w-2xl text-base md:mt-6 md:text-lg text-muted-foreground">{text}</p>
       </div>
     </section>
   );

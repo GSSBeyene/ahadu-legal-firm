@@ -18,10 +18,10 @@ function Team() {
   return (
     <>
       <PageHero eyebrow="ጠበቓታት · Advocates" title="Our lawyers" text="Speak directly with the advocate who will handle your case." />
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-3">
+      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:py-20 md:grid-cols-3">
         {lawyers.map((l) => (
           <article key={l.phone}>
-            <img src={l.photo} alt={l.name} className="aspect-[4/5] w-full object-cover" />
+            <img src={l.photo} alt={l.name} className="aspect-square w-full object-cover" />
             <h2 className="mt-6 text-3xl font-semibold">{l.name}</h2>
             <p className="text-muted-foreground" style={{ fontFamily: "Noto Sans Ethiopic" }}>{l.ti}</p>
             <p className="mt-1 text-sm uppercase tracking-widest text-crimson">Advocate</p>

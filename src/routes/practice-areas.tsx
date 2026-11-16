@@ -17,12 +17,12 @@ function Areas() {
   return (
     <>
       <PageHero eyebrow="What we do" title="Practice areas" text="Broad experience across the matters that affect people and businesses most." />
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl px-6 py-12 md:py-20">
         <div className="grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
           {areas.map((a, i) => (
-            <div key={a.t} className="bg-card p-10 transition hover:bg-secondary">
+            <div key={a.t} className="bg-card p-6 md:p-10 transition hover:bg-secondary">
               <span className="font-serif text-4xl text-gold">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-4 text-3xl font-semibold">{a.t}</h3>
+              <h3 className="mt-4 text-2xl font-semibold md:text-3xl">{a.t}</h3>
               <p className="mt-3 text-muted-foreground">{a.d}</p>
             </div>
           ))}
