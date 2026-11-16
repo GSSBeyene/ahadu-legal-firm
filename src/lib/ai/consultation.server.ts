@@ -33,7 +33,6 @@ export async function handleConsultation(request: Request) {
     headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
     fetch: runIdFetch.fetch,
   });
-  let failure: { status: number; message: string } | undefined;
   const result = streamText({
     model: provider.responses("openai/gpt-6-astra"),
     instructions: INSTRUCTIONS,
@@ -43,13 +42,26 @@ export async function handleConsultation(request: Request) {
     providerOptions: {
       openai: { store: false, forceReasoning: true, reasoningEffort: "low", reasoningSummary: "auto", include: ["reasoning.encrypted_content"] },
     },
-    onError: ({ error }) => {
-      const e = error as { statusCode?: number; message?: string };
-      failure = { status: e.statusCode ?? 500, message: e.message ?? "AI error" };
-      console.error("consultation AI error", error);
+  });
+  const enc = new TextEncoder();
+  const body = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        for await (const part of result.fullStream) {
+          if (part.type === "text-delta") controller.enqueue(enc.encode(part.text));
+          else if (part.type === "error") throw part.error;
+        }
+      } catch (error) {
+        console.error("consultation AI error", error);
+        const status = (error as { statusCode?: number }).statusCode;
+        const msg = status === 402 ? "The AI service is out of credits right now." : status === 429 ? "Too many requests — please try again in a minute." : "The summary could not be generated. Please call us instead.";
+        controller.enqueue(enc.encode(`\n\n[[ERROR]]${msg}`));
+      }
+      controller.close();
     },
   });
-  const res = result.toTextStreamResponse();
-  void failure;
-  return withLovableAiGatewayRunIdHeader(res, runIdFetch);
+  return withLovableAiGatewayRunIdHeader(
+    new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache, no-transform" } }),
+    runIdFetch,
+  );
 }
