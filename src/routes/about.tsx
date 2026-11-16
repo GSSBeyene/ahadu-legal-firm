@@ -17,7 +17,7 @@ function About() {
   return (
     <>
       <PageHero eyebrow="About us" title="Rooted in community. Committed to justice." text="Ahadu — meaning “one” — reflects our belief that everyone deserves equal, dedicated access to the law." />
-      <section className="mx-auto grid max-w-7xl gap-16 px-6 py-20 md:grid-cols-2">
+      <section className="mx-auto grid max-w-7xl gap-10 md:gap-16 px-6 py-12 md:py-20 md:grid-cols-2">
         <div className="space-y-5 text-lg text-muted-foreground">
           <p>Ahadu Law Firm is a team of practicing advocates providing legal services to individuals, families and businesses.</p>
           <p>We listen first, explain your options plainly, and then fight for the best possible outcome — whether in negotiation, mediation or the courtroom.</p>

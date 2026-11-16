@@ -18,10 +18,10 @@ function Contact() {
   return (
     <>
       <PageHero eyebrow="Get in touch" title="Book a consultation" text="Call any of our advocates directly. We'll listen to your situation and advise you on the next step." />
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-20 md:grid-cols-3">
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:py-20 md:grid-cols-3">
         {lawyers.map((l) => (
-          <a key={l.phone} href={tel(l.phone)} className="group flex items-center gap-5 border border-border bg-card p-6 transition hover:border-gold hover:shadow-lg">
-            <img src={l.photo} alt={l.name} className="h-20 w-20 rounded-full object-cover" />
+          <a key={l.phone} href={tel(l.phone)} className="group flex min-w-0 items-center gap-4 border border-border bg-card p-6 transition hover:border-gold hover:shadow-lg">
+            <img src={l.photo} alt={l.name} className="h-16 w-16 shrink-0 rounded-full object-cover md:h-20 md:w-20" />
             <div>
               <p className="font-serif text-2xl font-semibold">{l.name}</p>
               <p className="mt-1 flex items-center gap-2 font-semibold text-crimson"><Phone className="h-4 w-4" /> {l.phone}</p>
