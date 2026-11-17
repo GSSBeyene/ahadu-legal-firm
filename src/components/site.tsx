@@ -21,6 +21,7 @@ const nav = [
   { to: "/about", label: "About" },
   { to: "/practice-areas", label: "Practice Areas" },
   { to: "/team", label: "Our Lawyers" },
+  { to: "/consultation", label: "Describe Your Case" },
   { to: "/contact", label: "Contact" },
 ] as const;
 

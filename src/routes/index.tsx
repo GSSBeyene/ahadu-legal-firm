@@ -28,8 +28,8 @@ function Index() {
               Ahadu Law Firm stands beside individuals, families and businesses with honest advice and determined representation.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-              <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">
-                Book a consultation <ArrowRight className="h-4 w-4" />
+              <Link to="/consultation" className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">
+                Describe your case <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/practice-areas" className="inline-flex items-center justify-center rounded-sm border border-foreground px-6 py-3 font-semibold hover:bg-foreground hover:text-background">
                 Our services
