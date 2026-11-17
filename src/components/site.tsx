@@ -2,16 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Phone, Scale } from "lucide-react";
 import logo from "@/assets/logo.jpg.asset.json";
-import amanuel from "@/assets/amanuel.jpg.asset.json";
-import destalem from "@/assets/destalem.jpg.asset.json";
-import natan from "@/assets/natan.jpg.asset.json";
+import amanuelImg from "@/assets/lawyer-amanuel.jpg";
+import destalemImg from "@/assets/lawyer-destalem.jpg";
+import natanImg from "@/assets/lawyer-natan.jpg";
 
 export const LOGO = logo.url;
 
 export const lawyers = [
-  { name: "Amanuel Kahsay", ti: "ኣማኑኤል ካሕሳይ", phone: "0914837542", photo: amanuel.url },
-  { name: "Destalem Hadush", ti: "ደስታኣለም ሓዱሽ", phone: "0913689702", photo: destalem.url },
-  { name: "Natan Hailay", ti: "ናታን ሃይላይ", phone: "0914428841", photo: natan.url },
+  { name: "Amanuel Kahsay", ti: "ኣማኑኤል ካሕሳይ", phone: "0914837542", photo: amanuelImg },
+  { name: "Destalem Hadush", ti: "ደስታኣለም ሓዱሽ", phone: "0913689702", photo: destalemImg },
+  { name: "Natan Hailay", ti: "ናታን ሃይላይ", phone: "0914428841", photo: natanImg },
 ];
 
 export const tel = (p: string) => `tel:+251${p.slice(1)}`;
