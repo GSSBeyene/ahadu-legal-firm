@@ -9,12 +9,12 @@ import natanImg from "@/assets/lawyer-natan.jpg";
 export const LOGO = logo.url;
 
 export const lawyers = [
-  { name: "Amanuel Kahsay", ti: "ኣማኑኤል ካሕሳይ", phone: "0914837542", photo: amanuelImg },
-  { name: "Destalem Hadush", ti: "ደስታኣለም ሓዱሽ", phone: "0913689702", photo: destalemImg },
-  { name: "Natan Hailay", ti: "ናታን ሃይላይ", phone: "0914428841", photo: natanImg },
+  { name: "Amanuel Kahsay", ti: "ኣማኑኤል ካሕሳይ", phone: "+251 914 837 542", photo: amanuelImg },
+  { name: "Destalem Hadush", ti: "ደስታኣለም ሓዱሽ", phone: "+251 913 689 702", photo: destalemImg },
+  { name: "Natan Hailay", ti: "ናታን ሃይላይ", phone: "+251 914 428 841", photo: natanImg },
 ];
 
-export const tel = (p: string) => `tel:+251${p.slice(1)}`;
+export const tel = (p: string) => `tel:+${p.replace(/\D/g, "")}`;
 
 const nav = [
   { to: "/", label: "Home" },
