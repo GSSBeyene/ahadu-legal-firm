@@ -39,7 +39,7 @@ export function SiteHeader() {
             <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Law Firm</span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground" activeProps={{ className: "text-foreground underline decoration-gold decoration-2 underline-offset-8" }}>
               {n.label}
@@ -49,12 +49,12 @@ export function SiteHeader() {
             <Phone className="h-4 w-4" /> Call us
           </a>
         </nav>
-        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button className="lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X /> : <Menu />}
         </button>
       </div>
       {open && (
-        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 md:hidden">
+        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 lg:hidden">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="font-medium">{n.label}</Link>
           ))}
