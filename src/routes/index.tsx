@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ShieldCheck, Handshake, Gavel } from "lucide-react";
-import { LOGO, areas, lawyers, tel } from "@/components/site";
+import { areas, lawyers, tel } from "@/components/site";
 import logoFallback from "@/assets/logo-fallback.jpg";
 
 export const Route = createFileRoute("/")({
@@ -41,12 +41,7 @@ function Index() {
           </div>
           <div className="relative">
             <div className="absolute -inset-2 -rotate-3 md:-inset-4 rounded-sm bg-gold/30" />
-            <img src={LOGO} alt="Ahadu Law Firm logo" width={1024} height={1024} onError={(event) => {
-              const image = event.currentTarget;
-              if (image.dataset.fallbackApplied) return;
-              image.dataset.fallbackApplied = "true";
-              image.src = logoFallback;
-            }} className="relative w-full rounded-sm shadow-2xl" />
+            <img src={logoFallback} alt="Ahadu Law Firm logo" width={1024} height={1024} className="relative w-full rounded-sm shadow-2xl" />
           </div>
         </div>
       </section>
