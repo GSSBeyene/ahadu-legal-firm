@@ -30,4 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - AI calls go through server routes in src/routes/api/ backed by src/lib/ai/*.server.ts (Lovable AI Gateway, Responses API, streamed); keeps the key and prompts server-side.
-- Bundle the exact home-logo image as a portability exception so external hosts do not need Lovable asset serving or hydration-time error recovery.
+- Export the bundled exact logo through the shared site module as a portability exception so every consumer works without Lovable asset serving or hydration-time error recovery.

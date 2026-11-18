@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Phone, Scale } from "lucide-react";
-import logo from "@/assets/logo.jpg.asset.json";
+import logo from "@/assets/logo-fallback.jpg";
 import amanuelImg from "@/assets/lawyer-amanuel.jpg";
 import destalemImg from "@/assets/lawyer-destalem.jpg";
 import natanImg from "@/assets/lawyer-natan.jpg";
 
-export const LOGO = logo.url;
+export const LOGO = logo;
 
 export const lawyers = [
   { name: "Amanuel Kahsay", ti: "ኣማኑኤል ካሕሳይ", phone: "+251 914 837 542", photo: amanuelImg },
