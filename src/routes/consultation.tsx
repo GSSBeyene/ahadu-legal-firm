@@ -10,6 +10,8 @@ export const Route = createFileRoute("/consultation")({
       { name: "description", content: "Describe your legal issue and get an AI-prepared consultation summary to share with Ahadu Law Firm." },
       { property: "og:title", content: "Describe Your Case — Ahadu Law Firm" },
       { property: "og:description", content: "Prepare for your consultation with an AI-powered case summary." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Consultation,

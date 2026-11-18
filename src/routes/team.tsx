@@ -9,6 +9,8 @@ export const Route = createFileRoute("/team")({
       { name: "description", content: "Meet Amanuel Kahsay, Destalem Hadush and Natan Hailay of Ahadu Law Firm." },
       { property: "og:title", content: "Our Lawyers — Ahadu Law Firm" },
       { property: "og:description", content: "Meet the advocates of Ahadu Law Firm." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Team,

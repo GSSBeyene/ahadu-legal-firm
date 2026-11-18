@@ -8,6 +8,8 @@ export const Route = createFileRoute("/practice-areas")({
       { name: "description", content: "Civil, criminal, family, business, labor and property law services from Ahadu Law Firm." },
       { property: "og:title", content: "Practice Areas — Ahadu Law Firm" },
       { property: "og:description", content: "Civil, criminal, family, business, labor and property law." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Areas,

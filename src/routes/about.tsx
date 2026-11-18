@@ -8,6 +8,8 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Learn about Ahadu Law Firm, its values and its commitment to the betterment of justice." },
       { property: "og:title", content: "About — Ahadu Law Firm" },
       { property: "og:description", content: "Our values and commitment to the betterment of justice." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: About,

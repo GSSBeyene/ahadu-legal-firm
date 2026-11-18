@@ -9,6 +9,8 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Call Ahadu Law Firm to book a legal consultation." },
       { property: "og:title", content: "Contact — Ahadu Law Firm" },
       { property: "og:description", content: "Call us to book a legal consultation." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Contact,

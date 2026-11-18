@@ -30,3 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - AI calls go through server routes in src/routes/api/ backed by src/lib/ai/*.server.ts (Lovable AI Gateway, Responses API, streamed); keeps the key and prompts server-side.
+- The home logo keeps its CDN pointer as primary and a bundled exact-image fallback for hosts without Lovable asset serving; guard the fallback against retry loops.
