@@ -31,3 +31,6 @@ use the editor.
 
 - AI calls go through server routes in src/routes/api/ backed by src/lib/ai/*.server.ts (Lovable AI Gateway, Responses API, streamed); keeps the key and prompts server-side.
 - Export the bundled exact logo through the shared site module as a portability exception so every consumer works without Lovable asset serving or hydration-time error recovery.
+- Consultation intake writes through the validated server-only AI handler; anonymous clients have no direct database access, and team reads use authenticated server functions plus role-scoped RLS.
+- Team membership lives in protected user_roles and is assigned only from an approved email list after confirmation; editable profiles never confer privileges.
+- The dashboard uses a client-only authenticated layout and Query-backed loaders; one root session subscriber updates navigation and clears protected caches on sign-out.

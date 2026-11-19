@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import { ConsultationSummary as Summary } from '@/components/consultation-summary';
+import { Button } from '@/components/ui/button';
 import { Copy, Loader2, Phone, Sparkles, Square } from "lucide-react";
 import { PageHero, areas, lawyers, tel } from "@/components/site";
 
@@ -19,34 +21,18 @@ export const Route = createFileRoute("/consultation")({
 
 const ERR = "[[ERROR]]";
 
-function inline(t: string): ReactNode[] {
-  return t.split(/(\*\*[^*]+\*\*)/g).map((s, i) => (s.startsWith("**") && s.endsWith("**") ? <strong key={i}>{s.slice(2, -2)}</strong> : s));
-}
-
-function Summary({ text }: { text: string }) {
-  return (
-    <div className="space-y-2 text-[15px] leading-relaxed">
-      {text.split("\n").map((l, i) => {
-        if (l.startsWith("## ")) return <h3 key={i} className="pt-4 text-xl font-semibold first:pt-0">{l.slice(3)}</h3>;
-        if (/^\s*[-*] /.test(l)) return <p key={i} className="pl-5 -indent-3">• {inline(l.replace(/^\s*[-*] /, ""))}</p>;
-        if (!l.trim()) return null;
-        return <p key={i}>{inline(l)}</p>;
-      })}
-    </div>
-  );
-}
-
 function Consultation() {
   const [form, setForm] = useState({ name: "", phone: "", area: "", issue: "" });
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const ctrl = useRef<AbortController | null>(null);
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault();
-    setText(""); setError(""); setBusy(true); setCopied(false);
+    setText(""); setError(""); setBusy(true); setCopied(false); setSaved(false);
     const ac = new AbortController(); ctrl.current = ac;
     try {
       const res = await fetch("/api/consultation", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form), signal: ac.signal });
@@ -59,6 +45,8 @@ function Consultation() {
         const { done, value } = await reader.read();
         if (done) break;
         acc += dec.decode(value, { stream: true });
+        const savedAt = acc.indexOf('[[SAVED]]');
+        if (savedAt >= 0) { setText(acc.slice(0, savedAt).trim()); setSaved(true); break; }
         const at = acc.indexOf(ERR);
         if (at >= 0) { setText(acc.slice(0, at).trim()); setError(acc.slice(at + ERR.length)); break; }
         setText(acc);
@@ -89,12 +77,12 @@ function Consultation() {
           <label className="block"><span className="mb-1.5 block text-sm font-semibold">What happened?</span>
             <textarea required minLength={20} maxLength={4000} rows={9} className={field} placeholder="Describe the situation, dates, people involved and what you'd like to achieve. You may write in English, Tigrinya or Amharic." value={form.issue} onChange={(e) => setForm({ ...form, issue: e.target.value })} /></label>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <button disabled={busy} className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+            <Button disabled={busy} className="h-12 px-6 font-semibold">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 text-gold" />} {busy ? "Preparing summary…" : "Prepare my summary"}
-            </button>
-            {busy && <button type="button" onClick={() => ctrl.current?.abort()} className="inline-flex items-center justify-center gap-2 rounded-sm border border-foreground px-6 py-3 font-semibold"><Square className="h-4 w-4" /> Stop</button>}
+            </Button>
+            {busy && <Button type="button" variant="outline" className="h-12" onClick={() => ctrl.current?.abort()}><Square className="h-4 w-4" /> Stop</Button>}
           </div>
-          <p className="text-xs text-muted-foreground">This summary is not legal advice. Information you enter is processed by AI to prepare the summary and is not stored.</p>
+          <p className="text-xs text-muted-foreground">This summary is not legal advice. By submitting, you agree that your name, phone number, legal issue, and AI-prepared summary will be saved privately for the Ahadu team to review before contacting you.</p>
         </form>
 
         <div className="min-h-[24rem] border border-border bg-card p-6 md:p-8">
@@ -103,11 +91,12 @@ function Consultation() {
           {busy && !text && <p className="flex items-center gap-2 text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Reviewing your description…</p>}
           {text && <Summary text={text} />}
           {error && <p className="mt-4 rounded-sm border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">{error}</p>}
+          {saved && <p role="status" className="mt-5 border-l-2 border-gold pl-3 text-sm font-semibold">Saved securely for the Ahadu team.</p>}
           {text && !busy && (
             <div className="mt-8 border-t border-border pt-6">
               <p className="mb-3 text-sm text-muted-foreground">Copy this summary, then call one of our advocates to book your consultation.</p>
               <div className="flex flex-wrap gap-3">
-                <button onClick={() => { navigator.clipboard.writeText(text); setCopied(true); }} className="inline-flex items-center gap-2 rounded-sm border border-foreground px-4 py-2 text-sm font-semibold"><Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy summary"}</button>
+                <Button variant="outline" onClick={async () => { try { await navigator.clipboard.writeText(text); setCopied(true); } catch { setError('The summary could not be copied. Please select and copy the text.'); } }}><Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy summary"}</Button>
                 {lawyers.map((l) => <a key={l.phone} href={tel(l.phone)} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Phone className="h-4 w-4" /> {l.name.split(" ")[0]}</a>)}
               </div>
             </div>

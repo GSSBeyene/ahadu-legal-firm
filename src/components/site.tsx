@@ -1,4 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useTeamSession } from '@/components/team-session';
+import { Button } from '@/components/ui/button';
 import { useState } from "react";
 import { Menu, X, Phone, Scale } from "lucide-react";
 import logo from "@/assets/logo-fallback.jpg";
@@ -27,6 +31,10 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const user = useTeamSession();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const account = <div className="flex items-center gap-2"><Button asChild variant="ghost"><Link to={user ? '/dashboard' : '/auth'} onClick={() => setOpen(false)}>{user ? 'Inbox' : 'Team sign-in'}</Link></Button>{user && <Button variant="ghost" onClick={async () => { await queryClient.cancelQueries(); queryClient.clear(); await supabase.auth.signOut(); setOpen(false); await navigate({ to: '/auth', replace: true }); }}>Sign out</Button>}</div>;
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -39,26 +47,28 @@ export function SiteHeader() {
             <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Law Firm</span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-4 xl:flex">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground" activeProps={{ className: "text-foreground underline decoration-gold decoration-2 underline-offset-8" }}>
               {n.label}
             </Link>
           ))}
-          <a href={tel(lawyers[0]!.phone)} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+          {account}
+          <a href={tel(lawyers[0]?.phone ?? '')} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
             <Phone className="h-4 w-4" /> Call us
           </a>
         </nav>
-        <button className="lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+        <Button variant="ghost" size="icon" className="xl:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X /> : <Menu />}
-        </button>
+        </Button>
       </div>
       {open && (
-        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 lg:hidden">
+        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 xl:hidden">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="font-medium">{n.label}</Link>
           ))}
-          <a href={tel(lawyers[0]!.phone)} className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
+          {account}
+          <a href={tel(lawyers[0]?.phone ?? '')} className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
             <Phone className="h-4 w-4" /> Call us
           </a>
         </nav>

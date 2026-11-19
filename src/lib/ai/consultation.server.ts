@@ -25,6 +25,9 @@ export async function handleConsultation(request: Request) {
   const parsed = Input.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Please fill in your name, phone and at least a few sentences about your issue." }, { status: 400 });
   const d = parsed.data;
+  const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+  const { data: saved, error: saveError } = await supabaseAdmin.from('consultations').insert({ client_name: d.name, phone: d.phone, matter_type: d.area, issue: d.issue }).select('id').single();
+  if (saveError || !saved) return Response.json({ error: 'Your consultation could not be saved. Please try again before preparing a summary.' }, { status: 503 });
 
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
   const provider = createOpenAI({
@@ -46,15 +49,22 @@ export async function handleConsultation(request: Request) {
   const enc = new TextEncoder();
   const body = new ReadableStream<Uint8Array>({
     async start(controller) {
+      let summary = '';
       try {
         for await (const part of result.fullStream) {
-          if (part.type === "text-delta") controller.enqueue(enc.encode(part.text));
+          if (part.type === "text-delta") { summary += part.text; controller.enqueue(enc.encode(part.text)); }
           else if (part.type === "error") throw part.error;
         }
+        if (request.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        if (!summary.trim()) throw new Error('Empty summary');
+        const { error } = await supabaseAdmin.from('consultations').update({ summary, generation_status: 'ready' }).eq('id', saved.id);
+        if (error) throw new Error('Summary save failed');
+        controller.enqueue(enc.encode('\n\n[[SAVED]]'));
       } catch (error) {
-        console.error("consultation AI error", error);
+        await supabaseAdmin.from('consultations').update({ generation_status: request.signal.aborted ? 'cancelled' : 'failed' }).eq('id', saved.id);
+        if (request.signal.aborted) { controller.close(); return; }
         const status = (error as { statusCode?: number }).statusCode;
-        const msg = status === 402 ? "The AI service is out of credits right now." : status === 429 ? "Too many requests — please try again in a minute." : "The summary could not be generated. Please call us instead.";
+        const msg = status === 402 ? "The AI service is out of credits right now. Your issue is saved for the team." : status === 429 ? "Too many requests — please try again in a minute. Your issue is saved." : "The summary could not be completed and saved. Your original issue is saved for the team; please call us instead.";
         controller.enqueue(enc.encode(`\n\n[[ERROR]]${msg}`));
       }
       controller.close();
