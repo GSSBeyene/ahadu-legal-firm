@@ -1,3 +1,4 @@
+import { useLanguage } from '@/components/language';
 import { createFileRoute } from "@tanstack/react-router";
 import { Phone } from "lucide-react";
 import { PageHero, lawyers, tel } from "@/components/site";
@@ -17,9 +18,10 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { t } = useLanguage();
   return (
     <>
-      <PageHero eyebrow="Get in touch" title="Book a consultation" text="Call any of our advocates directly. We'll listen to your situation and advise you on the next step." />
+      <PageHero eyebrow="Get in touch" title={t("Book a consultation")} text="Call any of our advocates directly. We'll listen to your situation and advise you on the next step." />
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:py-20 md:grid-cols-3">
         {lawyers.map((l) => (
           <a key={l.phone} href={tel(l.phone)} className="group flex min-w-0 items-center gap-4 border border-border bg-card p-6 transition hover:border-gold hover:shadow-lg">

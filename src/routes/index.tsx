@@ -1,3 +1,5 @@
+import { translate } from '@/lib/translations';
+import { useLanguage } from '@/components/language';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ShieldCheck, Handshake, Gavel } from "lucide-react";
 import { LOGO, areas, lawyers, tel } from "@/components/site";
@@ -17,6 +19,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t, language } = useLanguage();
   return (
     <>
       <section className="relative overflow-hidden">
@@ -24,10 +27,10 @@ function Index() {
           <div>
             <p className="text-sm text-crimson" style={{ fontFamily: "Noto Sans Ethiopic" }}>ኣሃዱ · ትካል ግልጋሎት ጥብቕና</p>
             <h1 className="mt-5 text-5xl font-semibold leading-[1.05] sm:text-6xl md:text-7xl">
-              Justice, argued<br />with <em className="text-crimson">conviction.</em>
+              {t("Justice, argued")}<br />{t("with ")}<em className="text-crimson">{t("conviction.")}</em>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-              Ahadu Law Firm stands beside individuals, families and businesses with honest advice and determined representation.
+              {t("Ahadu Law Firm stands beside individuals, families and businesses with honest advice and determined representation.")}
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               <Link to="/consultation" className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">
@@ -54,7 +57,7 @@ function Index() {
           ].map(({ i: I, t, d }) => (
             <div key={t} className="flex gap-4">
               <I className="h-8 w-8 shrink-0 text-gold" />
-              <div><h3 className="text-2xl">{t}</h3><p className="mt-1 text-sm text-primary-foreground/70">{d}</p></div>
+              <div><h3 className="text-2xl">{translate(t, language)}</h3><p className="mt-1 text-sm text-primary-foreground/70">{translate(d, language)}</p></div>
             </div>
           ))}
         </div>
@@ -62,15 +65,15 @@ function Index() {
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 className="text-4xl font-semibold md:text-5xl">Practice areas</h2>
-          <Link to="/practice-areas" className="font-semibold text-crimson hover:underline">View all →</Link>
+          <h2 className="text-4xl font-semibold md:text-5xl">{t("Practice areas")}</h2>
+          <Link to="/practice-areas" className="font-semibold text-crimson hover:underline">{t("View all →")}</Link>
         </div>
         <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
           {areas.slice(0, 3).map((a, i) => (
-            <div key={a.t} className="bg-card p-8">
+            <div key={t(a.t)} className="bg-card p-8">
               <span className="font-serif text-4xl text-gold">0{i + 1}</span>
-              <h3 className="mt-4 text-2xl font-semibold">{a.t}</h3>
-              <p className="mt-2 text-muted-foreground">{a.d}</p>
+              <h3 className="mt-4 text-2xl font-semibold">{t(a.t)}</h3>
+              <p className="mt-2 text-muted-foreground">{t(a.d)}</p>
             </div>
           ))}
         </div>
@@ -78,7 +81,7 @@ function Index() {
 
       <section className="bg-secondary">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <h2 className="text-4xl font-semibold md:text-5xl">Meet our lawyers</h2>
+          <h2 className="text-4xl font-semibold md:text-5xl">{t("Meet our lawyers")}</h2>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {lawyers.map((l) => (
               <div key={l.phone} className="group bg-card p-6 shadow-sm">

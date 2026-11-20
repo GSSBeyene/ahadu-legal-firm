@@ -160,4 +160,11 @@
     font-family: var(--font-sans);
   }
   h1, h2, h3 { font-family: var(--font-serif); }
+  html:lang(ti) body, html:lang(am) body,
+  html:lang(ti) h1, html:lang(ti) h2, html:lang(ti) h3,
+  html:lang(am) h1, html:lang(am) h2, html:lang(am) h3 {
+    font-family: "Noto Sans Ethiopic", var(--font-sans);
+    letter-spacing: 0;
+  }
+  html:lang(ti) h1, html:lang(am) h1 { line-height: 1.45; }
 }

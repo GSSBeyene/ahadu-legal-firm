@@ -34,3 +34,4 @@ use the editor.
 - Consultation intake writes through the validated server-only AI handler; anonymous clients have no direct database access, and team reads use authenticated server functions plus role-scoped RLS.
 - Team membership lives in protected user_roles and is assigned only from an approved email list after confirmation; editable profiles never confer privileges.
 - The dashboard uses a client-only authenticated layout and Query-backed loaders; one root session subscriber updates navigation and clears protected caches on sign-out.
+- Website translations use a shared language context and static dictionary; preserve canonical matter values and client-entered content, and persist only the language preference in browser storage.

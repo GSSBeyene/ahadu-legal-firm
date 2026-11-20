@@ -1,3 +1,4 @@
+import { useLanguage, LanguageSelector } from '@/components/language';
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,11 +31,12 @@ const nav = [
 ] as const;
 
 export function SiteHeader() {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const user = useTeamSession();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const account = <div className="flex items-center gap-2"><Button asChild variant="ghost"><Link to={user ? '/dashboard' : '/auth'} onClick={() => setOpen(false)}>{user ? 'Inbox' : 'Team sign-in'}</Link></Button>{user && <Button variant="ghost" onClick={async () => { await queryClient.cancelQueries(); queryClient.clear(); await supabase.auth.signOut(); setOpen(false); await navigate({ to: '/auth', replace: true }); }}>Sign out</Button>}</div>;
+  const account = <div className="flex items-center gap-2"><Button asChild variant="ghost"><Link to={user ? '/dashboard' : '/auth'} onClick={() => setOpen(false)}>{t(user ? 'Inbox' : 'Team sign-in')}</Link></Button>{user && <Button variant="ghost" onClick={async () => { await queryClient.cancelQueries(); queryClient.clear(); await supabase.auth.signOut(); setOpen(false); await navigate({ to: '/auth', replace: true }); }}>{t("Sign out")}</Button>}</div>;
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -44,32 +46,32 @@ export function SiteHeader() {
           </span>
           <span className="leading-tight">
             <span className="block font-serif text-2xl font-bold tracking-wide">AHADU</span>
-            <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Law Firm</span>
+            <span className="block text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{t("Law Firm")}</span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-4 xl:flex">
+        <nav className="hidden items-center gap-3 2xl:flex">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground" activeProps={{ className: "text-foreground underline decoration-gold decoration-2 underline-offset-8" }}>
-              {n.label}
+              {t(n.label)}
             </Link>
           ))}
           {account}
           <a href={tel(lawyers[0]?.phone ?? '')} className="inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-            <Phone className="h-4 w-4" /> Call us
+            <Phone className="h-4 w-4" /> {t("Call us")}
           </a>
         </nav>
-        <Button variant="ghost" size="icon" className="xl:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+        <div className="flex items-center gap-1"><LanguageSelector /><Button variant="ghost" size="icon" className="2xl:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X /> : <Menu />}
-        </Button>
+        </Button></div>
       </div>
       {open && (
-        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 xl:hidden">
+        <nav className="flex flex-col gap-4 border-t border-border px-6 py-4 2xl:hidden">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="font-medium">{n.label}</Link>
+            <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="font-medium">{t(n.label)}</Link>
           ))}
           {account}
           <a href={tel(lawyers[0]?.phone ?? '')} className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
-            <Phone className="h-4 w-4" /> Call us
+            <Phone className="h-4 w-4" /> {t("Call us")}
           </a>
         </nav>
       )}
@@ -78,16 +80,17 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const { t } = useLanguage();
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-3">
         <div>
           <p className="font-serif text-3xl font-bold">AHADU</p>
           <p className="mt-1 text-sm text-gold" style={{ fontFamily: "Noto Sans Ethiopic" }}>ትካል ግልጋሎት ጥብቕና</p>
-          <p className="mt-4 text-sm text-primary-foreground/70">Betterment of Justice.</p>
+          <p className="mt-4 text-sm text-primary-foreground/70">{t("Betterment of Justice.")}</p>
         </div>
         <div>
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-gold">Call a lawyer</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-gold">{t("Call a lawyer")}</p>
           <ul className="space-y-2 text-sm">
             {lawyers.map((l) => (
               <li key={l.phone}><a href={tel(l.phone)} className="hover:text-gold">{l.name} — {l.phone}</a></li>
@@ -95,26 +98,27 @@ export function SiteFooter() {
           </ul>
         </div>
         <div>
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-gold">Explore</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-gold">{t("Explore")}</p>
           <ul className="space-y-2 text-sm">
-            {nav.map((n) => <li key={n.to}><Link to={n.to} className="hover:text-gold">{n.label}</Link></li>)}
+            {nav.map((n) => <li key={n.to}><Link to={n.to} className="hover:text-gold">{t(n.label)}</Link></li>)}
           </ul>
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 py-5 text-center text-xs text-primary-foreground/50">
-        © {new Date().getFullYear()} Ahadu Law Firm. All rights reserved.
+        © {new Date().getFullYear()} {t("Ahadu Law Firm. All rights reserved.")}
       </div>
     </footer>
   );
 }
 
 export function PageHero({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
+  const { t } = useLanguage();
   return (
     <section className="border-b border-border bg-secondary">
       <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-crimson">{eyebrow}</p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl">{title}</h1>
-        <p className="mt-4 max-w-2xl text-base md:mt-6 md:text-lg text-muted-foreground">{text}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-crimson">{t(eyebrow)}</p>
+        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl">{t(title)}</h1>
+        <p className="mt-4 max-w-2xl text-base md:mt-6 md:text-lg text-muted-foreground">{t(text)}</p>
       </div>
     </section>
   );
