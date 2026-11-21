@@ -15,8 +15,8 @@ export const Route = createFileRoute('/_authenticated/dashboard')({
   loaderDeps: ({ search }) => ({ page: search.page ?? 0, search: search.search ?? '' }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(options(deps.page, deps.search)),
   head: () => ({ meta: [ { title: 'Consultation Dashboard — Ahadu Law Firm' }, { name: 'description', content: 'Private Ahadu team consultation inbox.' }, { property: 'og:title', content: 'Consultation Dashboard — Ahadu Law Firm' }, { property: 'og:description', content: 'Private consultation summaries for the Ahadu team.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' }, { name: 'robots', content: 'noindex, nofollow' } ] }),
-  errorComponent: ({ error }) => { const router = useRouter(); return <section className="mx-auto max-w-3xl px-6 py-20"><h1 className="text-4xl">{t("Team access")}</h1><p role="alert" className="my-6">{error instanceof Error ? error.message : 'Consultations could not be loaded.'}</p><Button onClick={() => router.invalidate()}>{t("Try again")}</Button></section>; },
-  notFoundComponent: () => <p className="p-8">{t("Consultation not found.")}</p>,
+  errorComponent: ({ error }) => { const { t } = useLanguage(); const router = useRouter(); return <section className="mx-auto max-w-3xl px-6 py-20"><h1 className="text-4xl">{t("Team access")}</h1><p role="alert" className="my-6">{t(error instanceof Error ? error.message : 'Consultations could not be loaded.')}</p><Button onClick={() => router.invalidate()}>{t("Try again")}</Button></section>; },
+  notFoundComponent: () => { const { t } = useLanguage(); return <p className="p-8">{t("Consultation not found.")}</p>; },
   component: Dashboard,
 });
 

@@ -62,7 +62,7 @@ function Consultation() {
 
   return (
     <>
-      <PageHero eyebrow=t("Case intake") title={t("Describe your legal issue")} text=t("Tell us what happened in your own words. Our AI-powered assistant prepares a clear summary for our advocates so your consultation starts on the right foot.") />
+      <PageHero eyebrow="Case intake" title="Describe your legal issue" text="Tell us what happened in your own words. Our AI-powered assistant prepares a clear summary for our advocates so your consultation starts on the right foot." />
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:py-20 lg:grid-cols-2">
         <form onSubmit={submit} className="space-y-5">
           <div className="grid gap-5 sm:grid-cols-2">
